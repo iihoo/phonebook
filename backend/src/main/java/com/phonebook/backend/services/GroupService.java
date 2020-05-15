@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GroupService {
@@ -24,8 +25,8 @@ public class GroupService {
     }
 
     // Retrieves one group based on given id
-    public Group getGroup(Long id) {
-        return groupRepository.getOne(id);
+    public Optional<Group> getGroup(Long id) {
+        return groupRepository.findById(id);
     }
 
     // Removes one group based on given id

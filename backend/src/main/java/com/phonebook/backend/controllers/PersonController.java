@@ -20,7 +20,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/persons/{id}")
-    public Person getPerson(@PathVariable Long id) {
+    public Optional<Person> getPerson(@PathVariable Long id) {
         return personService.getPerson(id);
     }
 

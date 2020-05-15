@@ -1,6 +1,7 @@
 package com.phonebook.backend.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.phonebook.backend.classes.Person;
 import com.phonebook.backend.repositories.PersonRepository;
@@ -19,8 +20,8 @@ public class PersonService {
     }
 
     // Retrieves one person based on given id
-    public Person getPerson(Long id) {
-        return personRepository.getOne(id);
+    public Optional<Person> getPerson(Long id) {
+        return personRepository.findById(id);
     }
 
     // Add a person

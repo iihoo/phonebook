@@ -1,16 +1,10 @@
-import React from 'react'
-//import React, { useState, useEffect } from 'react'
-//import Persons from './components/Persons'
-//import Groups from './components/Groups'
-//import PersonService from './services/PersonService'
-//import GroupService from './services/GroupService'
-import HomeView from './views/HomeView'
-import GroupView from './views/GroupView'
-import SingleGroupView from './views/SingleGroupView'
-import { BrowserRouter as Router, Route, Switch, Redirect, NavLink } from 'react-router-dom'
-import './index.css'
+import React, { useState, useEffect } from 'react'
 
-/*
+import Persons from './../components/Persons'
+import Groups from './../components/Groups'
+import PersonService from './../services/PersonService'
+import GroupService from './../services/GroupService'
+
 const Notification = ({ message }) => {
   if (message === null) {
     return null
@@ -32,10 +26,9 @@ const ErrorMessage = ({ message }) => {
     </div>
   )
 }
-*/
 
-const App = () => {
-  /*
+const HomeView = () => {
+
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -205,44 +198,13 @@ const App = () => {
       setGroups(groups.filter(p => p.name !== name))
     }
   }
-  */
 
   return (
     <div>
-
-      <Router>
-        <div>
-          {/* Navigation bar contains links to home page, groups page and a dropdown list for
-          different kinds of photo pages */}
-          <ul className='navbar'>
-            <li><NavLink exact to='/'>Home</NavLink></li>
-            <li><NavLink to='/groups'>Groups</NavLink></li>
-          </ul>
-        </div>
-        <div>
-          <Switch>
-            <Route exact path='/' render={() =>
-              <HomeView />
-            } />
-            <Route exact path='/groups' render={() =>
-              <GroupView />
-            } />
-            <Route exact path='/groups/:id' render={({ match }) =>
-              <SingleGroupView id={match.params.id} />
-            } />
-            <Route path='/' render={() =>
-              <Redirect to='/' />
-            } />
-          </Switch>
-        </div>
-      </Router>
-
-      {/*
       <div className="flex-center">
         <h2>Phonebook</h2>
       </div>
 
-    
       <div className="flex-center">
         <Notification message={message} />
         <ErrorMessage message={errorMessage} />
@@ -263,9 +225,8 @@ const App = () => {
             groups={groups} handleGroupDelete={(event) => handleGroupDelete(event)} />
         </div>
       </div>
-    */}
     </div>
   )
 }
 
-export default App
+export default HomeView
