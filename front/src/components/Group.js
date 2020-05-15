@@ -9,7 +9,7 @@ const PersonList = (props) => {
 const Group = ({ group, deleteGroup }) => {
   return (
     <div>   
-      ({group.id}) <b>Group name</b>: {group.name} <button id={group.id} name={group.name} onClick={deleteGroup}>delete </button>
+      ({group.id}) <b>Group name</b>: {group.name} <button id={group.id} name={group.name} onClick={deleteGroup}>delete group?</button>
       <PersonList persons={group.persons}/>
     </div>
   )
