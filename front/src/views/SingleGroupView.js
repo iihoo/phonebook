@@ -129,7 +129,6 @@ const PersonList = ({ group, persons }) => {
             window.confirm(`Person ${personObject.name} is already added to the group`)
         }
 
-        //props.history.push('/groups/' + props.group.id)
     }
 
     return (

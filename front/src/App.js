@@ -16,6 +16,12 @@ const App = () => {
           </ul>
         </div>
         <div>
+          {/*
+          Paths:
+            /groups --> show group view
+            /groups/id --> show group view for a single group
+            ... all other paths --> show home view
+          */}
           <Switch>
             <Route exact path='/' render={() =>
               <HomeView />

@@ -32,7 +32,7 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    // Update person
+    // Update person: update number
     public Person updatePerson(Long id, Person updatedPerson) {
         Person person = personRepository.getOne(id);
         person.setNumber(updatedPerson.getNumber());

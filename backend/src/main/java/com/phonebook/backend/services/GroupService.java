@@ -35,7 +35,7 @@ public class GroupService {
         return groupRepository.findById(id);
     }
 
-    // Update group - add a person
+    // Update group: add a person
     public Person addPersonToGroup(Long id, Person p) {
         Group group = groupRepository.getOne(id);
         Person person = personRepository.getOne(p.getId());
@@ -43,7 +43,7 @@ public class GroupService {
         return personRepository.save(person);
     }
 
-    // Update group - remove a person
+    // Update group: remove a person
     public Person removePersonFromGroup(Long id, Person p) {
         Group group = groupRepository.getOne(id);
         Person person = personRepository.getOne(p.getId());

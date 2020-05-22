@@ -14,26 +14,31 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+    // return all persons
     @GetMapping
     public List<Person> getAllPersons() {
         return personService.getAllPersons();
     }
 
+    // return one person based on the person id
     @GetMapping(value = "/{id}")
     public Optional<Person> getPerson(@PathVariable Long id) {
         return personService.getPerson(id);
     }
 
+    // create a new person
     @PostMapping
     public Person addPerson(@RequestBody Person person) {
         return personService.addPerson(person);
     }
 
+    // update number of the person
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Person updatePerson(@RequestBody Person person, @PathVariable Long id) {
         return personService.updatePerson(id, person);
     }
 
+    // delete the person based on person id
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deletePerson(@PathVariable Long id) {
         personService.deletePerson(id);

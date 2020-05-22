@@ -1,9 +1,17 @@
 import React from 'react'
-import Group from './Group'
 
-const GroupList = (props) => {
-    return props.groups.map(group =>
-        <Group key={group.id} group={group} deleteGroup={props.handleGroupDelete} />)
+const Group = ({ group, deleteGroup }) => {
+    return (
+        <div>
+          ({group.id}) <b>Group name</b>: {group.name} <button id={group.id} name={group.name} onClick={deleteGroup}>delete group?</button>
+          {group.persons.map(person => <li key={person.id}>{person.name}</li>)}
+        </div>
+      )
+}
+
+const GroupList = ({groups, handleGroupDelete}) => {
+    return groups.map(group =>
+        <Group key={group.id} group={group} deleteGroup={handleGroupDelete} />)
 }
 
 const Groups = ({ newGroupName, addGroup, handleGroupNameChange, groups, handleGroupDelete }) => {
