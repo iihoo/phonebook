@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
 import { withRouter } from 'react-router-dom'
-import SingleGroup from '../components/SingleGroup'
 import GroupService from '../services/GroupService'
 
 const GroupView = (props) => {
@@ -16,7 +15,16 @@ const GroupView = (props) => {
   }, [])
 
   const listOfGroups = groups.map(group =>
-    <SingleGroup key={group.id} group={group} />)
+    <div key={group.id}>
+      ({group.id}) <b>Group name</b>: <a href='/' onClick={(event) => onClick(event, group.id)}>{group.name}</a>
+      {group.persons.map(person => <li key={person.id}>{person.name}</li>)}
+    </div>)
+
+  const onClick = (event, id) => {
+    event.preventDefault()
+    props.history.push('/groups/' + id)
+  }
+
 
   return (
     <div>

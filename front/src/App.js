@@ -9,11 +9,10 @@ const App = () => {
   return (
     <div>
       <Router>
-        <div>
-          <ul className='navbar'>
-            <li><NavLink exact to='/'>Home</NavLink></li>
-            <li><NavLink to='/groups'>Groups</NavLink></li>
-          </ul>
+        <div className="flex-center">
+          <NavLink exact to='/'>Home</NavLink>
+          &emsp;
+          <NavLink to='/groups'>Groups</NavLink>
         </div>
         <div>
           {/*

@@ -101,41 +101,21 @@ const HomeView = () => {
       window.confirm(`Group ${newGroupName} is already added to, try another name`)
     }
   }
-
-
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
+  
+  const handleFieldValueChange = (event, setFieldValue) => {
+    setFieldValue(event.target.value)
   }
 
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  }
-
-  const handleGroupNameChange = (event) => {
-    setNewGroupName(event.target.value)
-  }
-
-  const handleDelete = (event) => {
+  // service = PersonService/GroupService, type = "Person"/"Group", setCollection = setPersons/setGroups, collection = persons/groups
+  const handleDelete = (event, service, type, setCollection, collection) => {
     event.preventDefault()
     const name = event.target.getAttribute('name')
     const id = event.target.getAttribute('id')
     if (window.confirm('Delete ' + name + '?')) {
-      PersonService
+      service
         .deleteObject(id)
-      modifyNotification(`Person ${name} was deleted`)
-      setPersons(persons.filter(p => p.name !== name))
-    }
-  }
-
-  const handleGroupDelete = (event) => {
-    event.preventDefault()
-    const name = event.target.getAttribute('name')
-    const id = event.target.getAttribute('id')
-    if (window.confirm('Delete ' + name + '?')) {
-      GroupService
-        .deleteObject(id)
-      modifyNotification(`Group ${name} was deleted`)
-      setGroups(groups.filter(p => p.name !== name))
+      modifyNotification(`${type} ${name} was deleted`)
+      setCollection(collection.filter(p => p.name !== name))
     }
   }
 
@@ -153,15 +133,15 @@ const HomeView = () => {
         <div>
           < Persons newName={newName} newNumber={newNumber}
             addPerson={(event) => addPerson(event)}
-            handleNameChange={(event) => handleNameChange(event)}
-            handleNumberChange={(event) => handleNumberChange(event)}
-            persons={persons} handleDelete={(event) => handleDelete(event)} />
+            handleNameChange={(event) => handleFieldValueChange(event, setNewName)}
+            handleNumberChange={(event) => handleFieldValueChange(event, setNewNumber)}
+            persons={persons} handleDelete={(event) => handleDelete(event, PersonService, "Person", setPersons, persons)} />
         </div>
         <div>
           < Groups newGroupName={newGroupName}
             addGroup={(event) => addGroup(event)}
-            handleGroupNameChange={(event) => handleGroupNameChange(event)}
-            groups={groups} handleGroupDelete={(event) => handleGroupDelete(event)} />
+            handleGroupNameChange={(event) => handleFieldValueChange(event, setNewGroupName)}
+            groups={groups} handleGroupDelete={(event) => handleDelete(event, GroupService, "Group", setGroups, groups)} />
         </div>
       </div>
     </div>
