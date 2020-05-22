@@ -9,12 +9,11 @@ const Group = ({ group, deleteGroup }) => {
       )
 }
 
-const GroupList = ({groups, handleGroupDelete}) => {
-    return groups.map(group =>
-        <Group key={group.id} group={group} deleteGroup={handleGroupDelete} />)
-}
-
 const Groups = ({ newGroupName, addGroup, handleGroupNameChange, groups, handleGroupDelete }) => {
+
+    const groupList = groups.map(group =>
+        <Group key={group.id} group={group} deleteGroup={handleGroupDelete} />)
+
     return (
         <div>
             <h3>Add new group</h3>
@@ -27,8 +26,7 @@ const Groups = ({ newGroupName, addGroup, handleGroupNameChange, groups, handleG
                 </div>
             </form>
             <h3>Groups</h3>
-            <GroupList
-                groups={groups} handleGroupDelete={(event) => handleGroupDelete(event)} />
+            {groupList}
         </div>
     )
 }

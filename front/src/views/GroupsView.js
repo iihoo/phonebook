@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react'
+
 import { withRouter } from 'react-router-dom'
 import SingleGroup from '../components/SingleGroup'
 import GroupService from '../services/GroupService'
-
-const ListOfGroups = (props) => {
-  return props.groups.map(group =>
-    <SingleGroup key={group.id} group={group} />)
-}
 
 const GroupView = (props) => {
   const [groups, setGroups] = useState([])
@@ -19,6 +15,9 @@ const GroupView = (props) => {
       })
   }, [])
 
+  const listOfGroups = groups.map(group =>
+    <SingleGroup key={group.id} group={group} />)
+
   return (
     <div>
       <div className="flex-center">
@@ -26,7 +25,7 @@ const GroupView = (props) => {
       </div>
       <div className="flex-center">
         <div>
-          <ListOfGroups groups={groups} />
+          {listOfGroups}
         </div>
       </div>
     </div>

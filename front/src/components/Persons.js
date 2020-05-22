@@ -8,12 +8,11 @@ const Person = ({ person, deletePerson }) => {
     )
   }
 
-const PersonList = (props) => {
-    return props.persons.map(person =>
-        <Person key={person.id} person={person} deletePerson={props.handleDelete} />)
-}
-
 const Persons = ({ newName, newNumber, addPerson, handleNameChange, handleNumberChange, persons, handleDelete }) => {
+
+    const personList = persons.map(person =>
+        <Person key={person.id} person={person} deletePerson={handleDelete} />)
+
     return (
         <div>
             <h3>Add new number</h3>
@@ -29,8 +28,7 @@ const Persons = ({ newName, newNumber, addPerson, handleNameChange, handleNumber
                 </div>
             </form>
             <h3>Persons</h3>
-            <PersonList
-                persons={persons} handleDelete={(event) => handleDelete(event)} />
+            {personList}
         </div>
     )
 }

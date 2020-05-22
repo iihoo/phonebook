@@ -1,47 +1,18 @@
 import React, { useState, useEffect } from 'react'
+
 import GroupService from './../services/GroupService'
 import PersonService from './../services/PersonService'
-
-const Notification = ({ message }) => {
-    if (message === null) {
-        return null
-    }
-    return (
-        <div className='message'>
-            {message}
-        </div>
-    )
-}
-
-const ErrorMessage = ({ message }) => {
-    if (message === null) {
-        return null
-    }
-    return (
-        <div className='errorMessage'>
-            {message}
-        </div>
-    )
-}
+import Notification from './../components/Notification'
 
 const GroupInfo = ({ group }) => {
-    /*
-    const listPersonsOfGroup = () => {
-        if (group.persons) {
-            return group.persons.map((p) => <li key={p.name}>{p.name}</li>)
-        }
-    }
-
-    return (
-        <div>
-            Group members
-            {listPersonsOfGroup()}
-        </div>
-    )
-    */
-
     const [message, setMessage] = useState(null)
-    const [errorMessage, setErrorMessage] = useState(null)
+
+    const modifyNotification = (text) => {
+        setMessage(text)
+        setTimeout(() => {
+            setMessage(null)
+        }, 5000)
+    }
 
     const onClick = (event) => {
         event.preventDefault()
@@ -55,21 +26,10 @@ const GroupInfo = ({ group }) => {
             .removePersonFromGroup(group.id, personObject)
             .then(returnedPerson => {
                 //setGroup(persons.concat(returnedPersons))
-                setMessage(
-                    `Removed ${returnedPerson.name} from the group`
-                )
-                setTimeout(() => {
-                    setMessage(null)
-                }, 5000)
+                modifyNotification(`Removed ${returnedPerson.name} from the group`)
             })
             .catch(error => {
                 console.log(error)
-                //setErrorMessage(
-                //  error.response.data.error
-                //)
-                setTimeout(() => {
-                    setErrorMessage(null)
-                }, 5000)
             })
 
     }
@@ -85,7 +45,6 @@ const GroupInfo = ({ group }) => {
             Group members
             {listPersonsOfGroup()}
             <Notification message={message} />
-            <ErrorMessage message={errorMessage} />
         </div>
     )
 }
@@ -93,7 +52,13 @@ const GroupInfo = ({ group }) => {
 
 const PersonList = ({ group, persons }) => {
     const [message, setMessage] = useState(null)
-    const [errorMessage, setErrorMessage] = useState(null)
+
+    const modifyNotification = (text) => {
+        setMessage(text)
+        setTimeout(() => {
+            setMessage(null)
+        }, 5000)
+    }
 
     const onClick = (event) => {
         event.preventDefault()
@@ -109,21 +74,10 @@ const PersonList = ({ group, persons }) => {
                 .addPersonToGroup(group.id, personObject)
                 .then(returnedPerson => {
                     //setGroup(persons.concat(returnedPersons))
-                    setMessage(
-                        `Added ${returnedPerson.name}`
-                    )
-                    setTimeout(() => {
-                        setMessage(null)
-                    }, 5000)
+                    modifyNotification(`Added ${returnedPerson.name}`)
                 })
                 .catch(error => {
                     console.log(error)
-                    //setErrorMessage(
-                    //  error.response.data.error
-                    //)
-                    setTimeout(() => {
-                        setErrorMessage(null)
-                    }, 5000)
                 })
         } else {
             window.confirm(`Person ${personObject.name} is already added to the group`)
@@ -134,7 +88,6 @@ const PersonList = ({ group, persons }) => {
     return (
         <div>
             <Notification message={message} />
-            <ErrorMessage message={errorMessage} />
             All persons:
             {persons.map((p) => <li key={p.name}>{p.name} <button id={p.id} onClick={(event) => onClick(event)} name={p.name} number={p.number} >add to group?</button></li>)}
         </div>

@@ -2,40 +2,17 @@ import React, { useState, useEffect } from 'react'
 
 import Persons from './../components/Persons'
 import Groups from './../components/Groups'
+import Notification from './../components/Notification'
 import PersonService from './../services/PersonService'
 import GroupService from './../services/GroupService'
 
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-  return (
-    <div className='message'>
-      {message}
-    </div>
-  )
-}
-
-const ErrorMessage = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-  return (
-    <div className='errorMessage'>
-      {message}
-    </div>
-  )
-}
-
 const HomeView = () => {
-
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [groups, setGroups] = useState([])
   const [newGroupName, setNewGroupName] = useState('')
   const [message, setMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     PersonService
@@ -53,6 +30,13 @@ const HomeView = () => {
       })
   }, [groups])
 
+  const modifyNotification = (text) => {
+    setMessage(text)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
@@ -66,22 +50,12 @@ const HomeView = () => {
         .create(personObject)
         .then(returnedPersons => {
           setPersons(persons.concat(returnedPersons))
-          setMessage(
-            `Added ${newName}`
-          )
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
+          modifyNotification(`Added ${newName}`)
           setNewName('')
           setNewNumber('')
         })
         .catch(error => {
-          setErrorMessage(
-            error.response.data.error
-          )
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+          console.log(error)
         })
     } else {
       if (window.confirm(`Person ${newName} is already added to phonebook, replace the old number with a new one?`)) {
@@ -89,32 +63,18 @@ const HomeView = () => {
         PersonService
           .update(person.id, personObject).then(returnedPerson => {
             setPersons(persons.map(p => p.name !== newName ? p : returnedPerson))
-            setMessage(
-              `${newName}'s number was changed`
-            )
+            modifyNotification(`${newName}'s number was changed`)
             setNewName('')
             setNewNumber('')
           })
           .catch(error => {
             console.log(error)
-            setMessage(null)
-            setErrorMessage(
-              `the person ${newName} was already deleted from server`
-            )
-            setTimeout(() => {
-              setErrorMessage(null)
-            }, 5000)
-            //alert(
-            //  `the person ${newName} was already deleted from server`
-            //)
+            // ************************************'
             setPersons(persons.filter(p => p.name !== newName))
           })
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+
 
       }
-      //alert(`${newName} is already added to phonebook`)
     }
   }
 
@@ -131,21 +91,11 @@ const HomeView = () => {
         .create(groupObject)
         .then(returnedGroups => {
           setGroups(groups.concat(returnedGroups))
-          setMessage(
-            `Added ${newGroupName}`
-          )
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
+          modifyNotification(`Added ${newGroupName}`)
           setNewGroupName('')
         })
         .catch(error => {
-          setErrorMessage(
-            error.response.data.error
-          )
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+          console.log(error)
         })
     } else {
       window.confirm(`Group ${newGroupName} is already added to, try another name`)
@@ -172,12 +122,7 @@ const HomeView = () => {
     if (window.confirm('Delete ' + name + '?')) {
       PersonService
         .deleteObject(id)
-      setMessage(
-        `Person ${name} was deleted`
-      )
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      modifyNotification(`Person ${name} was deleted`)
       setPersons(persons.filter(p => p.name !== name))
     }
   }
@@ -189,12 +134,7 @@ const HomeView = () => {
     if (window.confirm('Delete ' + name + '?')) {
       GroupService
         .deleteObject(id)
-      setMessage(
-        `Group ${name} was deleted`
-      )
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      modifyNotification(`Group ${name} was deleted`)
       setGroups(groups.filter(p => p.name !== name))
     }
   }
@@ -207,7 +147,6 @@ const HomeView = () => {
 
       <div className="flex-center">
         <Notification message={message} />
-        <ErrorMessage message={errorMessage} />
       </div>
 
       <div className="flex-container">
