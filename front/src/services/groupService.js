@@ -10,6 +10,16 @@ const getOne = id => {
   return request.then(response => response.data)
 }
 
+const addPersonToGroup = (groupId, personObject) => {
+  const request = axios.put(`${baseUrl}/addpersons/${groupId}`, personObject)
+  return request.then(response => response.data)
+}
+
+const removePersonFromGroup = (groupId, personObject) => {
+  const request = axios.put(`${baseUrl}/removepersons/${groupId}`, personObject)
+  return request.then(response => response.data)
+}
+
 const create = newObject => {
   const request = axios.post(baseUrl, newObject)
   return request.then(response => response.data)
@@ -24,4 +34,4 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, getOne, create, deleteObject, update }
+export default { getAll, getOne, addPersonToGroup, removePersonFromGroup, create, deleteObject, update }

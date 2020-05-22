@@ -51,7 +51,7 @@ const HomeView = () => {
       .then(initialGroups => {
         setGroups(initialGroups)
       })
-  }, [])
+  }, [groups])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -228,5 +228,6 @@ const HomeView = () => {
     </div>
   )
 }
+
 
 export default HomeView
