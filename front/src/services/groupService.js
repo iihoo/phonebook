@@ -10,8 +10,10 @@ const getOne = id => {
   return request.then(response => response.data)
 }
 
-const addPersonToGroup = (groupId, personObject) => {
-  const request = axios.put(`${baseUrl}/addpersons/${groupId}`, personObject)
+//const addPersonToGroup = (groupId, personObject) => {
+//const request = axios.put(`${baseUrl}/addpersons/${groupId}`, personObject)
+const addPersonToGroup = (groupId, personId) => {
+  const request = axios.put(`${baseUrl}/addpersons/${groupId}`, personId)
   return request.then(response => response.data)
 }
 

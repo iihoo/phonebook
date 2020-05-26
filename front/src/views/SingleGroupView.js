@@ -4,99 +4,10 @@ import GroupService from './../services/GroupService'
 import PersonService from './../services/PersonService'
 import Notification from './../components/Notification'
 
-const GroupInfo = ({ group }) => {
-    const [message, setMessage] = useState(null)
-
-    const modifyNotification = (text) => {
-        setMessage(text)
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
-    }
-
-    const onClick = (event) => {
-        event.preventDefault()
-        const personObject = {
-            id: event.target.id,
-            name: event.target.name,
-            number: event.target.number
-        }
-
-        GroupService
-            .removePersonFromGroup(group.id, personObject)
-            .then(returnedPerson => {
-                //setGroup(persons.concat(returnedPersons))
-                modifyNotification(`Removed ${returnedPerson.name} from the group`)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
-    }
-
-    const listPersonsOfGroup = () => {
-        if (group.persons) {
-            return group.persons.map((p) => <li key={p.name}>{p.name} <button id={p.id} onClick={(event) => onClick(event)} name={p.name} number={p.number} >remove from group?</button></li>)
-        }
-    }
-
-    return (
-        <div>
-            Group members
-            {listPersonsOfGroup()}
-            <Notification message={message} />
-        </div>
-    )
-}
-
-
-const PersonList = ({ group, persons }) => {
-    const [message, setMessage] = useState(null)
-
-    const modifyNotification = (text) => {
-        setMessage(text)
-        setTimeout(() => {
-            setMessage(null)
-        }, 5000)
-    }
-
-    const onClick = (event) => {
-        event.preventDefault()
-        const personObject = {
-            id: event.target.id,
-            name: event.target.name,
-            number: event.target.number
-        }
-
-        const names = group.persons.map(group => group.name)
-        if (names.includes(personObject.name) === false) {
-            GroupService
-                .addPersonToGroup(group.id, personObject)
-                .then(returnedPerson => {
-                    //setGroup(persons.concat(returnedPersons))
-                    modifyNotification(`Added ${returnedPerson.name}`)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        } else {
-            window.confirm(`Person ${personObject.name} is already added to the group`)
-        }
-
-    }
-
-    return (
-        <div>
-            <Notification message={message} />
-            All persons:
-            {persons.map((p) => <li key={p.name}>{p.name} <button id={p.id} onClick={(event) => onClick(event)} name={p.name} number={p.number} >add to group?</button></li>)}
-        </div>
-    )
-}
-
 const SingleGroupView = (props) => {
     const [group, setGroup] = useState('')
     const [persons, setPersons] = useState([])
+    const [message, setMessage] = useState(null)
 
     useEffect(() => {
         GroupService
@@ -104,7 +15,7 @@ const SingleGroupView = (props) => {
             .then(initialGroup => {
                 setGroup(initialGroup)
             })
-    }, [group, props.id])
+    }, [props.id])
 
     useEffect(() => {
         PersonService
@@ -114,17 +25,67 @@ const SingleGroupView = (props) => {
             })
     }, [])
 
+    const modifyNotification = (text) => {
+        setMessage(text)
+        setTimeout(() => {
+            setMessage(null)
+        }, 5000)
+    }
+
+    const onClickAddToGroup = (event) => {
+        const name = event.target.name
+        const personId = event.target.id
+
+        const names = group.persons.map(person => person.name)
+        if (names.includes(name) === false) {
+            GroupService
+                .addPersonToGroup(group.id, personId)
+                .then(returnedGroup => {
+                    setGroup(returnedGroup)
+                    modifyNotification(`Added ${name}`)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        } else {
+            window.confirm(`Person ${name} is already added to the group`)
+        }
+    }
+
+    const onClickRemoveFromGroup = (event) => {
+        const name = event.target.name
+        const personId = event.target.id
+
+        GroupService
+            .removePersonFromGroup(group.id, personId)
+            .then(returnedGroup => {
+                setGroup(returnedGroup)
+                modifyNotification(`Removed ${name} from the group`)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     return (
         <div>
+            <Notification message={message} />
             <div className="flex-center">
                 <h2>Group {group.id}: {group.name}</h2>
             </div>
             <div className="flex-center">
-                <GroupInfo group={group} groupPersons={group.persons} />
+                <div>
+                    Group members
+                    {group.persons && group.persons.map((person) => 
+                        <li key={person.name}>{person.name} <button id={person.id} name={person.name} onClick={(event) => onClickRemoveFromGroup(event)} >remove from group?</button></li>)}
+                </div>
             </div>
             <br />
             <div className="flex-center">
-                <PersonList group={group} persons={persons} />
+                <div>
+                    All persons:
+                    {persons.map((person) => <li key={person.name}>{person.name} <button id={person.id} name={person.name} onClick={(event) => onClickAddToGroup(event)} >add to group?</button></li>)}
+                </div>
             </div>
         </div>
     )

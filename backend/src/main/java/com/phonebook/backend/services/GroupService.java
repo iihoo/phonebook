@@ -36,19 +36,21 @@ public class GroupService {
     }
 
     // Update group: add a person
-    public Person addPersonToGroup(Long id, Person p) {
+    public Group addPersonToGroup(Long id, String personId) {
         Group group = groupRepository.getOne(id);
-        Person person = personRepository.getOne(p.getId());
+        Person person = personRepository.getOne(Long.parseLong(personId));
         person.addGroup(group);
-        return personRepository.save(person);
+        personRepository.save(person);
+        return group;
     }
 
     // Update group: remove a person
-    public Person removePersonFromGroup(Long id, Person p) {
+    public Group removePersonFromGroup(Long id, String personId) {
         Group group = groupRepository.getOne(id);
-        Person person = personRepository.getOne(p.getId());
+        Person person = personRepository.getOne(Long.parseLong(personId));
         person.removeGroup(group);
-        return personRepository.save(person);
+        personRepository.save(person);
+        return group;
     }
 
     // Removes one group based on given id

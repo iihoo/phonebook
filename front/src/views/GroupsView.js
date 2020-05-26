@@ -24,8 +24,7 @@ const GroupView = (props) => {
     event.preventDefault()
     props.history.push('/groups/' + id)
   }
-
-
+  
   return (
     <div>
       <div className="flex-center">

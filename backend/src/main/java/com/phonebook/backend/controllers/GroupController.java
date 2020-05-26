@@ -30,14 +30,14 @@ public class GroupController {
 
     // add a person to the group
     @RequestMapping(value = "/addpersons/{id}", method = RequestMethod.PUT)
-    public Person addToGroup(@RequestBody Person person, @PathVariable Long id) {
-        return groupService.addPersonToGroup(id, person);
+    public Group addToGroup(@RequestBody String personId, @PathVariable Long id) {
+        return groupService.addPersonToGroup(id, personId);
     }
 
     // remove a person from the group
     @RequestMapping(value = "/removepersons/{id}", method = RequestMethod.PUT)
-    public Person removeFromGroup(@RequestBody Person person, @PathVariable Long id) {
-        return groupService.removePersonFromGroup(id, person);
+    public Group removeFromGroup(@RequestBody String personId, @PathVariable Long id) {
+        return groupService.removePersonFromGroup(id, personId);
     }
 
     // create a new group
