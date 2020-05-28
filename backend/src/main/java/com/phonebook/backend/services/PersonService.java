@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.phonebook.backend.classes.Group;
 import com.phonebook.backend.classes.Person;
+import com.phonebook.backend.repositories.GroupRepository;
 import com.phonebook.backend.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
     // Retrieve all persons
     public List<Person> getAllPersons() {
@@ -39,9 +43,10 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    // Removes one person based on given id
-    public void deletePerson(Long id) {
+    // Removes one person based on given id, returns list of all groups
+    public List<Group> deletePerson(Long id) {
         personRepository.deleteById(id);
+        return groupRepository.findAll();
     }
 
 }

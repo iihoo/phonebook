@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import './../components/Components.css'
+import './Views.css'
 
 import Persons from './../components/Persons'
 import Groups from './../components/Groups'
-import Notification from './../components/Notification'
 import PersonService from './../services/PersonService'
 import GroupService from './../services/GroupService'
 
@@ -12,7 +13,6 @@ const HomeView = () => {
   const [newNumber, setNewNumber] = useState('')
   const [groups, setGroups] = useState([])
   const [newGroupName, setNewGroupName] = useState('')
-  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     PersonService
@@ -28,13 +28,14 @@ const HomeView = () => {
       .then(initialGroups => {
         setGroups(initialGroups)
       })
-  }, [groups])
+  }, [])
 
   const modifyNotification = (text) => {
-    setMessage(text)
+    document.getElementById("notification-text").textContent = text
+    document.getElementById("notification-overlay").style.display = "block"
     setTimeout(() => {
-      setMessage(null)
-    }, 5000)
+      document.getElementById("notification-overlay").style.display = "none";
+    }, 1500)
   }
 
   const addPerson = (event) => {
@@ -59,7 +60,7 @@ const HomeView = () => {
         })
     } else {
       if (window.confirm(`Person ${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        const person = persons.find(p => p.name === newName)
+        const person = persons.find(person => person.name === newName)
         PersonService
           .update(person.id, personObject).then(returnedPerson => {
             setPersons(persons.map(p => p.name !== newName ? p : returnedPerson))
@@ -69,11 +70,7 @@ const HomeView = () => {
           })
           .catch(error => {
             console.log(error)
-            // ************************************'
-            setPersons(persons.filter(p => p.name !== newName))
           })
-
-
       }
     }
   }
@@ -101,48 +98,63 @@ const HomeView = () => {
       window.confirm(`Group ${newGroupName} is already added to, try another name`)
     }
   }
-  
+
   const handleFieldValueChange = (event, setFieldValue) => {
     setFieldValue(event.target.value)
   }
 
-  // service = PersonService/GroupService, type = "Person"/"Group", setCollection = setPersons/setGroups, collection = persons/groups
-  const handleDelete = (event, service, type, setCollection, collection) => {
+  const handleGroupDelete = (event, service, type, setCollection, collection) => {
     event.preventDefault()
     const name = event.target.getAttribute('name')
     const id = event.target.getAttribute('id')
     if (window.confirm('Delete ' + name + '?')) {
-      service
+      GroupService
         .deleteObject(id)
-      modifyNotification(`${type} ${name} was deleted`)
-      setCollection(collection.filter(p => p.name !== name))
+      modifyNotification(`Group ${name} was deleted`)
+      setGroups(groups.filter(group => group.name !== name))
+    }
+  }
+
+  // when person is deleted, backend returns list of groups 
+  const handlePersonDelete = (event) => {
+    event.preventDefault()
+    const name = event.target.getAttribute('name')
+    const id = event.target.getAttribute('id')
+    if (window.confirm('Delete ' + name + '?')) {
+      PersonService
+        .deleteObject(id)
+        .then(returnedGroups => {
+          setGroups(returnedGroups)
+          modifyNotification(`Person ${name} was deleted`)
+          setPersons(persons.filter(person => person.name !== name))
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 
   return (
     <div>
-      <div className="flex-center">
-        <h2>Phonebook</h2>
-      </div>
-
-      <div className="flex-center">
-        <Notification message={message} />
-      </div>
-
       <div className="flex-container">
         <div>
-          < Persons newName={newName} newNumber={newNumber}
+          <Persons newName={newName} newNumber={newNumber}
             addPerson={(event) => addPerson(event)}
             handleNameChange={(event) => handleFieldValueChange(event, setNewName)}
             handleNumberChange={(event) => handleFieldValueChange(event, setNewNumber)}
-            persons={persons} handleDelete={(event) => handleDelete(event, PersonService, "Person", setPersons, persons)} />
+            persons={persons} handleDelete={(event) => handlePersonDelete(event)} />
         </div>
+
         <div>
-          < Groups newGroupName={newGroupName}
+          <Groups newGroupName={newGroupName}
             addGroup={(event) => addGroup(event)}
             handleGroupNameChange={(event) => handleFieldValueChange(event, setNewGroupName)}
-            groups={groups} handleGroupDelete={(event) => handleDelete(event, GroupService, "Group", setGroups, groups)} />
+            groups={groups} handleGroupDelete={(event) => handleGroupDelete(event)} />
         </div>
+      </div>
+
+      <div id="notification-overlay">
+        <div id="notification-text"></div>
       </div>
     </div>
   )

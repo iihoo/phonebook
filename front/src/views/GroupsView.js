@@ -3,6 +3,33 @@ import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import GroupService from '../services/GroupService'
 
+const Person = ({ person }) => {
+  return (
+    <React.Fragment>
+      <tr>
+        <td></td>
+        <td colSpan="2">{person.name}</td>
+      </tr>
+    </React.Fragment>
+  )
+}
+
+const Group = ({ group, onClick }) => {
+
+  const personList = group.persons.map(person =>
+    <Person key={person.id} person={person} />)
+
+  return (
+    <React.Fragment>
+      <tr>
+        <td>{group.id}</td>
+        <td><a href='/' onClick={(event) => onClick(event, group.id)}>{group.name}</a></td>
+      </tr>
+      {personList}
+    </React.Fragment>
+  )
+}
+
 const GroupView = (props) => {
   const [groups, setGroups] = useState([])
 
@@ -14,28 +41,29 @@ const GroupView = (props) => {
       })
   }, [])
 
-  const listOfGroups = groups.map(group =>
-    <div key={group.id}>
-      ({group.id}) <b>Group name</b>: <a href='/' onClick={(event) => onClick(event, group.id)}>{group.name}</a>
-      {group.persons.map(person => <li key={person.id}>{person.name}</li>)}
-    </div>)
+  const groupList = groups.map(group =>
+    <Group key={group.id} group={group} onClick={(event) => onClick(event, group.id)} />)
 
   const onClick = (event, id) => {
     event.preventDefault()
     props.history.push('/groups/' + id)
   }
-  
+
   return (
-    <div>
-      <div className="flex-center">
-        <h2>Groups</h2>
+      <div className="grid-container">
+        <h3>Groups</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>group</th>
+            </tr>
+          </thead>
+          <tbody>
+            {groupList}
+          </tbody>
+        </table>
       </div>
-      <div className="flex-center">
-        <div>
-          {listOfGroups}
-        </div>
-      </div>
-    </div>
   )
 }
 

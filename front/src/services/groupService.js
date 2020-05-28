@@ -10,15 +10,13 @@ const getOne = id => {
   return request.then(response => response.data)
 }
 
-//const addPersonToGroup = (groupId, personObject) => {
-//const request = axios.put(`${baseUrl}/addpersons/${groupId}`, personObject)
 const addPersonToGroup = (groupId, personId) => {
   const request = axios.put(`${baseUrl}/addpersons/${groupId}`, personId)
   return request.then(response => response.data)
 }
 
-const removePersonFromGroup = (groupId, personObject) => {
-  const request = axios.put(`${baseUrl}/removepersons/${groupId}`, personObject)
+const removePersonFromGroup = (groupId, personId) => {
+  const request = axios.put(`${baseUrl}/removepersons/${groupId}`, personId)
   return request.then(response => response.data)
 }
 

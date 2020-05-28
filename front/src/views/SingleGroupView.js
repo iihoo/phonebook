@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import './../components/Components.css'
 
 import GroupService from './../services/GroupService'
 import PersonService from './../services/PersonService'
-import Notification from './../components/Notification'
 
 const SingleGroupView = (props) => {
     const [group, setGroup] = useState('')
     const [persons, setPersons] = useState([])
-    const [message, setMessage] = useState(null)
 
     useEffect(() => {
         GroupService
@@ -26,10 +25,11 @@ const SingleGroupView = (props) => {
     }, [])
 
     const modifyNotification = (text) => {
-        setMessage(text)
+        document.getElementById("notification-text").textContent = text
+        document.getElementById("notification-overlay").style.display = "block"
         setTimeout(() => {
-            setMessage(null)
-        }, 5000)
+            document.getElementById("notification-overlay").style.display = "none";
+        }, 1500)
     }
 
     const onClickAddToGroup = (event) => {
@@ -69,23 +69,28 @@ const SingleGroupView = (props) => {
 
     return (
         <div>
-            <Notification message={message} />
             <div className="flex-center">
                 <h2>Group {group.id}: {group.name}</h2>
             </div>
+
             <div className="flex-center">
                 <div>
                     Group members
-                    {group.persons && group.persons.map((person) => 
-                        <li key={person.name}>{person.name} <button id={person.id} name={person.name} onClick={(event) => onClickRemoveFromGroup(event)} >remove from group?</button></li>)}
+                    {group.persons && group.persons.map((person) =>
+                    <li key={person.name}>{person.name} <button className="button" id={person.id} name={person.name} onClick={(event) => onClickRemoveFromGroup(event)} >remove</button></li>)}
                 </div>
             </div>
+
             <br />
             <div className="flex-center">
                 <div>
                     All persons:
-                    {persons.map((person) => <li key={person.name}>{person.name} <button id={person.id} name={person.name} onClick={(event) => onClickAddToGroup(event)} >add to group?</button></li>)}
+                    {persons.map((person) => <li key={person.name}>{person.name} <button className="button" id={person.id} name={person.name} onClick={(event) => onClickAddToGroup(event)} >add to group</button></li>)}
                 </div>
+            </div>
+
+            <div id="notification-overlay">
+                <div id="notification-text"></div>
             </div>
         </div>
     )
