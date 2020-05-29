@@ -32,3 +32,10 @@
     justify-content: center;
     flex-direction: column;
   }
+
+  .flex-container-flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-around;
+  }

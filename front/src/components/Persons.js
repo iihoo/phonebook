@@ -40,10 +40,7 @@ const Persons = ({ newName, newNumber, addPerson, handleNameChange, handleNumber
                 <table>
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>name</th>
-                            <th>number</th>
-                            <th>action</th>
+                            <th>id</th><th>name</th><th>number</th><th>action</th>
                         </tr>
                     </thead>
                     <tbody>

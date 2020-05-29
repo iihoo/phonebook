@@ -16,12 +16,6 @@ const App = () => {
           <NavLink exact to='/persons'>Persons</NavLink>
         </div>
         <div>
-          {/*
-          Paths:
-            /groups --> show group view
-            /groups/id --> show group view for a single group
-            ... all other paths --> show home view
-          */}
           <Switch>
             <Route exact path='/' render={() =>
               <HomeView />

@@ -6,6 +6,7 @@ import Persons from './../components/Persons'
 import Groups from './../components/Groups'
 import PersonService from './../services/PersonService'
 import GroupService from './../services/GroupService'
+import Notification from './../components/Notification'
 
 const HomeView = () => {
   const [persons, setPersons] = useState([])
@@ -15,28 +16,16 @@ const HomeView = () => {
   const [newGroupName, setNewGroupName] = useState('')
 
   useEffect(() => {
-    PersonService
-      .getAll()
-      .then(initialPersons => {
-        setPersons(initialPersons)
-      })
+    PersonService.getAll().then(initialPersons => {
+      setPersons(initialPersons)
+    })
   }, [])
 
   useEffect(() => {
-    GroupService
-      .getAll()
-      .then(initialGroups => {
-        setGroups(initialGroups)
-      })
+    GroupService.getAll().then(initialGroups => {
+      setGroups(initialGroups)
+    })
   }, [])
-
-  const modifyNotification = (text) => {
-    document.getElementById("notification-text").textContent = text
-    document.getElementById("notification-overlay").style.display = "block"
-    setTimeout(() => {
-      document.getElementById("notification-overlay").style.display = "none";
-    }, 1500)
-  }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -47,30 +36,25 @@ const HomeView = () => {
 
     const names = persons.map(person => person.name)
     if (names.includes(personObject.name) === false) {
-      PersonService
-        .create(personObject)
-        .then(returnedPersons => {
-          setPersons(persons.concat(returnedPersons))
-          modifyNotification(`Added ${newName}`)
-          setNewName('')
-          setNewNumber('')
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      PersonService.create(personObject).then(returnedPersons => {
+        setPersons(persons.concat(returnedPersons))
+        Notification.modifyNotification(`Added ${newName}`)
+        setNewName('')
+        setNewNumber('')
+      }).catch(error => {
+        console.log(error)
+      })
     } else {
       if (window.confirm(`Person ${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const person = persons.find(person => person.name === newName)
-        PersonService
-          .update(person.id, personObject).then(returnedPerson => {
-            setPersons(persons.map(p => p.name !== newName ? p : returnedPerson))
-            modifyNotification(`${newName}'s number was changed`)
-            setNewName('')
-            setNewNumber('')
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        PersonService.update(person.id, personObject).then(returnedPerson => {
+          setPersons(persons.map(p => p.name !== newName ? p : returnedPerson))
+          Notification.modifyNotification(`${newName}'s number was changed`)
+          setNewName('')
+          setNewNumber('')
+        }).catch(error => {
+          console.log(error)
+        })
       }
     }
   }
@@ -84,16 +68,13 @@ const HomeView = () => {
 
     const names = groups.map(group => group.name)
     if (names.includes(groupObject.name) === false) {
-      GroupService
-        .create(groupObject)
-        .then(returnedGroups => {
-          setGroups(groups.concat(returnedGroups))
-          modifyNotification(`Added ${newGroupName}`)
-          setNewGroupName('')
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      GroupService.create(groupObject).then(returnedGroups => {
+        setGroups(groups.concat(returnedGroups))
+        Notification.modifyNotification(`Added ${newGroupName}`)
+        setNewGroupName('')
+      }).catch(error => {
+        console.log(error)
+      })
     } else {
       window.confirm(`Group ${newGroupName} is already added to, try another name`)
     }
@@ -108,9 +89,8 @@ const HomeView = () => {
     const name = event.target.getAttribute('name')
     const id = event.target.getAttribute('id')
     if (window.confirm('Delete ' + name + '?')) {
-      GroupService
-        .deleteObject(id)
-      modifyNotification(`Group ${name} was deleted`)
+      GroupService.deleteObject(id)
+      Notification.modifyNotification(`Group ${name} was deleted`)
       setGroups(groups.filter(group => group.name !== name))
     }
   }
@@ -121,16 +101,13 @@ const HomeView = () => {
     const name = event.target.getAttribute('name')
     const id = event.target.getAttribute('id')
     if (window.confirm('Delete ' + name + '?')) {
-      PersonService
-        .deleteObject(id)
-        .then(returnedGroups => {
-          setGroups(returnedGroups)
-          modifyNotification(`Person ${name} was deleted`)
-          setPersons(persons.filter(person => person.name !== name))
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      PersonService.deleteObject(id).then(returnedGroups => {
+        setGroups(returnedGroups)
+        Notification.modifyNotification(`Person ${name} was deleted`)
+        setPersons(persons.filter(person => person.name !== name))
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 

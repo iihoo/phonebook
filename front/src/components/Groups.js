@@ -36,7 +36,6 @@ const Group = ({ group, deleteGroup }) => {
             </tr>
             {personsVisible === true && personList}
         </React.Fragment>
-
     )
 }
 
@@ -64,10 +63,7 @@ const Groups = ({ newGroupName, addGroup, handleGroupNameChange, groups, handleG
                 <table>
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>name</th>
-                            <th>persons</th>
-                            <th>action</th>
+                            <th>id</th><th>name</th><th>persons</th><th>action</th>
                         </tr>
                     </thead>
                     <tbody>

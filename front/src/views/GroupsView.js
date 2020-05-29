@@ -20,13 +20,20 @@ const Group = ({ group, onClick }) => {
     <Person key={person.id} person={person} />)
 
   return (
-    <React.Fragment>
-      <tr>
-        <td>{group.id}</td>
-        <td><a href='/' onClick={(event) => onClick(event, group.id)}>{group.name}</a></td>
-      </tr>
-      {personList}
-    </React.Fragment>
+    <table>
+      <thead>
+        <tr>
+          <th>id</th><th>group</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{group.id}</td>
+          <td><a href='/' onClick={(event) => onClick(event, group.id)}>{group.name}</a></td>
+        </tr>
+        {personList}
+      </tbody>
+    </table>
   )
 }
 
@@ -34,11 +41,9 @@ const GroupView = (props) => {
   const [groups, setGroups] = useState([])
 
   useEffect(() => {
-    GroupService
-      .getAll()
-      .then(initialGroups => {
-        setGroups(initialGroups)
-      })
+    GroupService.getAll().then(initialGroups => {
+      setGroups(initialGroups)
+    })
   }, [])
 
   const groupList = groups.map(group =>
@@ -50,20 +55,9 @@ const GroupView = (props) => {
   }
 
   return (
-      <div className="grid-container">
-        <h3>Groups</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>id</th>
-              <th>group</th>
-            </tr>
-          </thead>
-          <tbody>
-            {groupList}
-          </tbody>
-        </table>
-      </div>
+    <div className="flex-container-flex">
+      {groupList}
+    </div>
   )
 }
 

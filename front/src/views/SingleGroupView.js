@@ -3,34 +3,23 @@ import './../components/Components.css'
 
 import GroupService from './../services/GroupService'
 import PersonService from './../services/PersonService'
+import Notification from './../components/Notification'
 
 const SingleGroupView = (props) => {
     const [group, setGroup] = useState('')
     const [persons, setPersons] = useState([])
 
     useEffect(() => {
-        GroupService
-            .getOne(props.id)
-            .then(initialGroup => {
-                setGroup(initialGroup)
-            })
+        GroupService.getOne(props.id).then(initialGroup => {
+            setGroup(initialGroup)
+        })
     }, [props.id])
 
     useEffect(() => {
-        PersonService
-            .getAll()
-            .then(initialPersons => {
-                setPersons(initialPersons)
-            })
+        PersonService.getAll().then(initialPersons => {
+            setPersons(initialPersons)
+        })
     }, [])
-
-    const modifyNotification = (text) => {
-        document.getElementById("notification-text").textContent = text
-        document.getElementById("notification-overlay").style.display = "block"
-        setTimeout(() => {
-            document.getElementById("notification-overlay").style.display = "none";
-        }, 1500)
-    }
 
     const onClickAddToGroup = (event) => {
         const name = event.target.name
@@ -38,15 +27,12 @@ const SingleGroupView = (props) => {
 
         const names = group.persons.map(person => person.name)
         if (names.includes(name) === false) {
-            GroupService
-                .addPersonToGroup(group.id, personId)
-                .then(returnedGroup => {
-                    setGroup(returnedGroup)
-                    modifyNotification(`Added ${name}`)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            GroupService.addPersonToGroup(group.id, personId).then(returnedGroup => {
+                setGroup(returnedGroup)
+                Notification.modifyNotification(`Added ${name}`)
+            }).catch(error => {
+                console.log(error)
+            })
         } else {
             window.confirm(`Person ${name} is already added to the group`)
         }
@@ -56,15 +42,12 @@ const SingleGroupView = (props) => {
         const name = event.target.name
         const personId = event.target.id
 
-        GroupService
-            .removePersonFromGroup(group.id, personId)
-            .then(returnedGroup => {
-                setGroup(returnedGroup)
-                modifyNotification(`Removed ${name} from the group`)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        GroupService.removePersonFromGroup(group.id, personId).then(returnedGroup => {
+            setGroup(returnedGroup)
+            Notification.modifyNotification(`Removed ${name} from the group`)
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     // all persons in the group
@@ -101,9 +84,7 @@ const SingleGroupView = (props) => {
                 <table>
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>name</th>
-                            <th>action</th>
+                            <th>id</th><th>name</th><th>action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -116,9 +97,7 @@ const SingleGroupView = (props) => {
                 <table>
                     <thead>
                         <tr>
-                            <th>id</th>
-                            <th>name</th>
-                            <th>action</th>
+                            <th>id</th><th>name</th><th>action</th>
                         </tr>
                     </thead>
                     <tbody>
