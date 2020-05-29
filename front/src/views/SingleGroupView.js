@@ -67,28 +67,65 @@ const SingleGroupView = (props) => {
             })
     }
 
+    // all persons in the group
+    const groupPersons = () => {
+        if (group.persons) {
+            return (group.persons.map(person =>
+                <React.Fragment key={person.id}>
+                    <tr>
+                        <td>{person.id}</td>
+                        <td>{person.name}</td>
+                        <td><button className="button" id={person.id} name={person.name} onClick={(event) => onClickRemoveFromGroup(event)} >remove</button></td>
+                    </tr>
+                </React.Fragment>))
+        }
+    }
+
+    // all persons in the system
+    const personList = persons.map(person =>
+        <React.Fragment key={person.id}>
+            <tr>
+                <td>{person.id}</td>
+                <td>{person.name}</td>
+                <td><button className="button" id={person.id} name={person.name} onClick={(event) => onClickAddToGroup(event)} >add to group</button></td>
+            </tr>
+        </React.Fragment>)
+
     return (
         <div>
-            <div className="flex-center">
+            <div className="grid-container">
                 <h2>Group {group.id}: {group.name}</h2>
             </div>
 
-            <div className="flex-center">
-                <div>
-                    Group members
-                    {group.persons && group.persons.map((person) =>
-                    <li key={person.name}>{person.name} <button className="button" id={person.id} name={person.name} onClick={(event) => onClickRemoveFromGroup(event)} >remove</button></li>)}
-                </div>
+            <div className="grid-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {groupPersons()}
+                    </tbody>
+                </table>
             </div>
-
-            <br />
-            <div className="flex-center">
-                <div>
-                    All persons:
-                    {persons.map((person) => <li key={person.name}>{person.name} <button className="button" id={person.id} name={person.name} onClick={(event) => onClickAddToGroup(event)} >add to group</button></li>)}
-                </div>
+            <div className="grid-container">
+                <h3>All persons</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {personList}
+                    </tbody>
+                </table>
             </div>
-
             <div id="notification-overlay">
                 <div id="notification-text"></div>
             </div>
