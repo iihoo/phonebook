@@ -12,6 +12,8 @@ services:
         ports:
          - 5432:5432 
     backend-docker:
+        build:
+            context: ./backend
         image: backend-docker:latest
         environment: 
             SPRING_DATASOURCE_URL: jdbc:postgresql://postgrestestidb:5432/puhelinluettelo
@@ -20,6 +22,8 @@ services:
         ports:
          - 8080:8080
     frontend-docker:
+        build:
+            context: ./front
         image: frontend-docker:latest
         stdin_open: true
         depends_on:
