@@ -11,17 +11,18 @@ services:
             POSTGRES_DB: puhelinluettelo
         ports:
          - 5432:5432 
-    #backend-docker:
-    #    image: backend-docker:latest
-    #    environment: 
-    #        SPRING_DATASOURCE_URL: jdbc:postgresql://postgrestestidb:5432/puhelinluettelo
-    #    depends_on:
-    #     - postgrestestidb
-    #    ports:
-    #     - 8080:8080
-    #front_docker:
-    #    image: front_docker:latest
-    #    depends_on:
-    #     - backend-docker
-    #    ports:
-    #     - 3000:3000
+    backend-docker:
+        image: backend-docker:latest
+        environment: 
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgrestestidb:5432/puhelinluettelo
+        depends_on:
+         - postgrestestidb
+        ports:
+         - 8080:8080
+    frontend-docker:
+        image: frontend-docker:latest
+        stdin_open: true
+        depends_on:
+         - backend-docker
+        ports:
+         - 3000:3000
