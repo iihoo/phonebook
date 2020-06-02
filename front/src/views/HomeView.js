@@ -35,7 +35,9 @@ const HomeView = () => {
     }
 
     const names = persons.map(person => person.name)
-    if (names.includes(personObject.name) === false) {
+    if (newName === "") {
+      window.confirm(`Empty name is not allowed, try another name`)
+    } else if (names.includes(personObject.name) === false) {
       PersonService.create(personObject).then(returnedPersons => {
         setPersons(persons.concat(returnedPersons))
         Notification.modifyNotification(`Added ${newName}`)
@@ -67,7 +69,9 @@ const HomeView = () => {
     }
 
     const names = groups.map(group => group.name)
-    if (names.includes(groupObject.name) === false) {
+    if (newGroupName === "") {
+      window.confirm(`Empty name is not allowed, try another name`)
+    } else if (names.includes(groupObject.name) === false) {
       GroupService.create(groupObject).then(returnedGroups => {
         setGroups(groups.concat(returnedGroups))
         Notification.modifyNotification(`Added ${newGroupName}`)

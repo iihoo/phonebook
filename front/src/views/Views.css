@@ -14,7 +14,7 @@
   
   #notification-text{
     position: absolute;
-    top: 50%;
+    top: 20%;
     left: 50%;
     font-size: 50px;
     color: white;
@@ -37,5 +37,5 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    justify-content: space-around;
+    justify-content: space-evenly;
   }

@@ -30,7 +30,7 @@ const Group = ({ group, deleteGroup }) => {
         <React.Fragment>
             <tr>
                 <td>{group.id}</td>
-                <td><button className="button-group-name" onClick={() => showPersons()}>{group.name}</button></td>
+                <td className="tooltip"><button className="button-group-name" onClick={() => showPersons()}>{group.name}</button><span className="tooltiptext">Show persons</span></td>
                 <td>{group.persons.length}</td>
                 <td><button className="button" id={group.id} name={group.name} onClick={deleteGroup}>delete</button></td>
             </tr>
