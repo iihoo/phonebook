@@ -39,7 +39,7 @@ const Group = ({ group, onClick }) => {
 
 const GroupView = (props) => {
   const [groups, setGroups] = useState([])
-
+  
   useEffect(() => {
     GroupService.getAll().then(initialGroups => {
       setGroups(initialGroups)

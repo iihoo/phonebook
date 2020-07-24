@@ -8,12 +8,14 @@ import Notification from './../components/Notification'
 const SingleGroupView = (props) => {
     const [group, setGroup] = useState('')
     const [persons, setPersons] = useState([])
+    const [ready, setReady] = useState(false)
 
     useEffect(() => {
         GroupService.getOne(props.id).then(initialGroup => {
             setGroup(initialGroup)
+            setReady(true)
         })
-    }, [props.id])
+    }, [props.id, ready])
 
     useEffect(() => {
         PersonService.getAll().then(initialPersons => {
@@ -74,42 +76,55 @@ const SingleGroupView = (props) => {
             </tr>
         </React.Fragment>)
 
-    return (
-        <div>
-            <div className="grid-container">
-                <h2>Group {group.id}: {group.name}</h2>
+    if (ready === false) {
+        return null
+    } else if (ready === true && !group) {
+        return (
+            <div>
+                No such group exists!
             </div>
+        )
+    } else {
 
-            <div className="grid-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>id</th><th>name</th><th>action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {groupPersons()}
-                    </tbody>
-                </table>
+
+        return (
+            <div>
+                <div className="grid-container">
+                    <h2>Group {group.id}: {group.name}</h2>
+                </div>
+
+                <div className="grid-container">
+                <h3>Persons in the group</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>id</th><th>name</th><th>action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {groupPersons()}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="grid-container">
+                    <h3>All persons</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>id</th><th>name</th><th>action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {personList}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="notification-overlay">
+                    <div id="notification-text"></div>
+                </div>
             </div>
-            <div className="grid-container">
-                <h3>All persons</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>id</th><th>name</th><th>action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {personList}
-                    </tbody>
-                </table>
-            </div>
-            <div id="notification-overlay">
-                <div id="notification-text"></div>
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default SingleGroupView
