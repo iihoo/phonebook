@@ -1,8 +1,6 @@
 version: '3.7'
 
 services:
-    # Sopivan version voi valita täältä: https://hub.docker.com/r/library/postgres/tags/
-    # Ympäristömuuttujat on selitetty sivulla: https://hub.docker.com/r/library/postgres/
     postgrestestidb:
         image: postgres:9.6
         environment:
