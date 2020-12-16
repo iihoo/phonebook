@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { withRouter } from 'react-router-dom'
-import GroupService from '../services/GroupService'
+import GroupService from '../services/groupService'
 
 const Person = ({ person }) => {
   return (

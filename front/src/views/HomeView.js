@@ -4,8 +4,8 @@ import './Views.css'
 
 import Persons from './../components/Persons'
 import Groups from './../components/Groups'
-import PersonService from './../services/PersonService'
-import GroupService from './../services/GroupService'
+import PersonService from '../services/personService'
+import GroupService from '../services/groupService'
 import Notification from './../components/Notification'
 
 const HomeView = () => {

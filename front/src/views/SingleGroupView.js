@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './../components/Components.css'
 
-import GroupService from './../services/GroupService'
-import PersonService from './../services/PersonService'
+import GroupService from '../services/groupService'
+import PersonService from '../services/personService'
 import Notification from './../components/Notification'
 
 const SingleGroupView = (props) => {
